@@ -1,21 +1,36 @@
 import os
 import shutil
+import sys
 
 from ..count_words import count_words
+from ..parse_args import parse_args
 from ..preprocess_lines import preprocess_lines
 from ..read_all_lines import read_all_lines
 from ..split_into_words import split_into_words
 from ..write_word_counts import write_word_counts
 
 
+def test_parse_args():
+
+    test_args = ["homework", "data/input/", "data/output/"]
+    sys.argv = test_args
+
+    input_folder, output_folder = parse_args()
+
+    assert input_folder == "data/input/"
+    assert output_folder == "data/output/"
+
+
 def test_read_all_lines():
-    input_folder = "data/input"
+    input_folder = "data/input/"
+
     lines = read_all_lines(input_folder)
-    assert len(lines) > 0, "No lines were read from the input folder"
-    assert any(
+    assert len(lines) > 0, "No lines read from input folder"
+
+    assert any(  # En una lista se busca AL MENOS un verdadero
         "Analytics refers to the systematic computational analysis of data" in line
         for line in lines
-    )
+    ), "Expected line not found in input folder"
 
 
 def test_preprocess_lines():
